@@ -140,7 +140,9 @@ Recorded 20-record benchmark at 50 ms per upstream request, including activation
 
 These are simulation results, including ORM work, not live-service guarantees. In-process `ASGITransport` waits for background completion, so the benchmark measures completion rather than `202` delivery. See [Plan 11](plans/11-integration-and-performance.md) for conditions.
 
-Source repository: [askMohan/paribus-assessment](https://github.com/askMohan/paribus-assessment). Hosted API/docs URLs are pending authenticated Render deployment and verification in Plan 14.
+Submission links: [source repository](https://github.com/askMohan/paribus-assessment), [hosted API health](https://paribus-assessment-kq37.onrender.com/health), and [interactive API docs](https://paribus-assessment-kq37.onrender.com/docs). Base URL: `https://paribus-assessment-kq37.onrender.com`.
+
+Public checks on 2026-11-19 passed health/docs/OpenAPI, valid/invalid validation, and unknown-batch `404`. One intended one-hospital upload returned `202`/`Location` and completed activation with the exact response schema. A controlled restart replaced the instance: the saved batch then returned `404`, while its activated Directory record remained. Hosted storage is ephemeral on Render Free; see the deployment limitation above.
 
 ## Design considerations and production path
 

@@ -1,7 +1,7 @@
 # Hospital Bulk API
 ## Technical design | Current solution and production evolution
 
-The bulk service owns CSV validation, batch orchestration, checkpoints, and recovery. The external Hospital Directory owns hospital records and activation. We accept a saved batch with `202`; the assignment's comprehensive result is returned by polling. Current implementation is complete through Plan 13; future changes below are proposals.
+The bulk service owns CSV validation, batch orchestration, checkpoints, and recovery. The external Hospital Directory owns hospital records and activation. We accept a saved batch with `202`; the assignment's comprehensive result is returned by polling. Current behavior is implemented; future changes below are proposals.
 
 ### 1. Current architecture and execution
 
@@ -37,7 +37,7 @@ Initially: batch `QUEUED`, activation false, duration zero; rows `PENDING` with 
 
 Claims use a state check inside a short SQLite write transaction (`BEGIN IMMEDIATE`), plus the database's in-process async lock. Only one attempt can claim the batch; duplicate dispatch cannot claim active work. No database transaction spans an HTTP request. This guards local execution, not exactly-once external writes.
 
-**Deployment boundary:** one API instance, one Uvicorn worker, no separate queue/DB service. SQLite is `/data/hospitals.db`, mounted on `hospital_data`; the Directory is external. `BackgroundTasks` runs after the response in the API process, so it is not a durable queue. Compose `down` retains the volume; `down --volumes` deletes it.
+**Deployment boundary:** one API instance/worker, no separate queue/DB service. Compose mounts `/data/hospitals.db` on `hospital_data`; `down` retains it, `down --volumes` deletes it. The Render Free demo has no persistent disk: restart/redeploy loses batches and idle spin-down can interrupt work. `BackgroundTasks` stays in-process; hosted restart-safe resume requires persistent storage.
 
 <!-- pagebreak -->
 
@@ -124,7 +124,7 @@ Success path: batch `QUEUED -> PROCESSING -> ACTIVATING -> COMPLETED`; row `PEND
 
 Startup keeps checkpointed duration and discards the uncheckpointed crash interval rather than counting downtime; duration can be understated after a crash. A crash between acceptance commit and task start also requires manual resume. A client disconnect does not cancel accepted work while the process remains alive, but the client must retain its UUID.
 
-**Current duplicate boundary:** resume avoids recreating known IDs; identical new uploads create new batches. There is no upload idempotency, global hospital identifier, or upstream idempotency support. Losing `202` and its UUID cannot be safely recovered by uploading again. Verification: 277 tests passed with temporary SQLite and simulated/fake adapters; no live Directory mutations.
+**Current duplicate boundary:** resume avoids recreating known IDs; identical new uploads create new batches. There is no upload idempotency, global hospital identifier, or upstream idempotency support. Losing `202` and its UUID cannot be safely recovered by uploading again. Local regression: 277 tests passed with temporary SQLite and simulated/fake adapters; those tests make no live Directory mutations.
 
 <!-- pagebreak -->
 
