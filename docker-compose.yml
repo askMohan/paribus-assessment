@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    env_file: .env
+    environment:
+      PORT: ${PORT:-8000}
+    ports:
+      - "${PORT:-8000}:${PORT:-8000}"
+    volumes:
+      - hospital_data:/data
+
+volumes:
+  hospital_data:

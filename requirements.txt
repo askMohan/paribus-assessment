@@ -1,0 +1,82 @@
+aiosqlite==0.22.1
+    # via -c requirements.txt
+annotated-doc==0.0.6
+    # via
+    #   -c requirements.txt
+    #   fastapi
+annotated-types==0.8.0
+    # via
+    #   -c requirements.txt
+    #   pydantic
+anyio==4.16.0
+    # via
+    #   -c requirements.txt
+    #   fastapi
+    #   httpx
+    #   starlette
+certifi==2026.10.23
+    # via
+    #   -c requirements.txt
+    #   httpcore
+    #   httpx
+click==8.5.1
+    # via
+    #   -c requirements.txt
+    #   uvicorn
+fastapi==0.163.2
+    # via -c requirements.txt
+greenlet==3.5.6
+    # via sqlalchemy
+h11==0.16.0
+    # via
+    #   -c requirements.txt
+    #   httpcore
+    #   uvicorn
+httpcore==1.0.9
+    # via
+    #   -c requirements.txt
+    #   httpx
+httpx==0.28.1
+    # via -c requirements.txt
+idna==3.20
+    # via
+    #   -c requirements.txt
+    #   anyio
+    #   httpx
+opentelemetry-api==1.45.2
+    # via
+    #   -c requirements.txt
+    #   fastapi
+pydantic==2.14.3
+    # via
+    #   -c requirements.txt
+    #   fastapi
+pydantic-core==2.50.4
+    # via
+    #   -c requirements.txt
+    #   pydantic
+python-multipart==0.0.34
+    # via -c requirements.txt
+sqlalchemy==2.1.9
+starlette==1.10.0
+    # via
+    #   -c requirements.txt
+    #   fastapi
+typing-extensions==4.16.0
+    # via
+    #   -c requirements.txt
+    #   anyio
+    #   fastapi
+    #   opentelemetry-api
+    #   pydantic
+    #   pydantic-core
+    #   sqlalchemy
+    #   starlette
+    #   typing-inspection
+typing-inspection==0.4.5
+    # via
+    #   -c requirements.txt
+    #   fastapi
+    #   pydantic
+uvicorn==0.54.0
+    # via -c requirements.txt

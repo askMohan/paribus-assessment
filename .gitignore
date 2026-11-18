@@ -1,0 +1,26 @@
+# Local Python environment and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local configuration; examples can be committed later
+.env
+.env.*
+!.env.example
+
+# SQLite state and journals
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+
+# Generated outputs and operating-system metadata
+benchmark-results/
+.DS_Store
