@@ -2,7 +2,7 @@
 
 Design and usage reference: [project README](../README.md), [technical design](../design_doc.md), and [illustrated PDF](../output/pdf/hospital-bulk-api-guide.pdf).
 
-This folder breaks the agreed design into small implementation steps. Steps 01-13 are implemented and verified; their completion notes record the commands and results. Steps 07-10 were developed in parallel at the user's request and then integrated and reviewed together. The next step is [14 - Deployment and submission](14-deployment-and-submission.md), which remains unstarted.
+This folder breaks the agreed design into small implementation steps. Steps 01-13 are implemented and verified; their completion notes record the commands and results. Steps 07-10 were developed in parallel at the user's request and then integrated and reviewed together. [14 - Deployment and submission](14-deployment-and-submission.md) is in progress: repository access and Render configuration are being verified; public deployment checks remain outstanding.
 
 ## Working agreement
 
@@ -99,4 +99,4 @@ Step 11 verification on 2026-11-18: **277 tests passed**, including 16 concrete-
 
 Step 12 packaging is complete: minimal Dockerfile/Compose, runtime-only image, non-root execution, one worker, configurable port, standard-library health check, and persistent SQLite volume. Real image builds and running-container checks verified health/docs/validation plus saved-state recovery after container recreation. `.env.example` documents the supported values; the ignored local `.env` was created only when absent. Build/start/stop commands and volume-retention behavior are recorded in step 12.
 
-Step 13 documentation is complete on 2026-11-19: project README, three CSV examples, and a four-page technical design in editable Markdown and a visually verified PDF. Current-flow and production-flow diagrams accompany the actual schema, execution/recovery flow, exact client and Directory contracts, and proposed upload/per-row/activation idempotency. Copyable curl validation/upload/poll/resume flows passed against a local simulated Directory; exact JSON examples match the response models. Full regression: **277 tests passed**; lint, dependency, and Compose checks passed. Plan 14 remains unstarted.
+Step 13 documentation is complete on 2026-11-19: project README, three CSV examples, and a four-page technical design in editable Markdown and a visually verified PDF. Current-flow and production-flow diagrams accompany the actual schema, execution/recovery flow, exact client and Directory contracts, and proposed upload/per-row/activation idempotency. Copyable curl validation/upload/poll/resume flows passed against a local simulated Directory; exact JSON examples match the response models. Full regression: **277 tests passed**; lint, dependency, and Compose checks passed. Plan 14 is in progress; its checklist records deployment verification separately from local preparation.

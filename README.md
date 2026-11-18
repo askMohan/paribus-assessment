@@ -40,6 +40,14 @@ Compose loads `.env`, uses one non-root application container, and mounts SQLite
 
 All configuration names/defaults are in [.env.example](.env.example) and [app/config.py](app/config.py). Local SQLite defaults to `data/hospitals.db`; keep the container path under `/data`. The defaults are 1 MiB per upload, 20 hospitals, 20 in-flight batches, 5 shared upstream requests/connections, 3 eligible attempts, and connect/read/write/pool timeouts of 10/30/10/5 seconds. Each network attempt also has a 55-second total deadline. Retry sleeps are bounded at 30 seconds; longer `Retry-After` hints stop the automatic loop.
 
+## Deploy on Render
+
+[render.yaml](render.yaml) defines one paid Docker web service (`0.5c-512mb`) with a 1 GB persistent disk mounted at `/data`, `SQLITE_PATH=/data/hospitals.db`, and `/health` monitoring. The existing Dockerfile supplies the build and startup command, including one Uvicorn worker and Render's `PORT`. Other HTTP/limit settings keep the documented application defaults. Automatic deploys are disabled; deploy deliberately when no batch is running.
+
+Create a Blueprint in the [Render dashboard](https://dashboard.render.com/) from this repository and review the paid service/disk before creation. After deployment, verify health, `/docs`, validation-only requests, and a missing-batch `404`; then perform one small intended live upload. Verify that its saved result survives a controlled restart before claiming hosted recovery.
+
+Persistent disks require a paid service and cause a brief stop/start during deployments. Render's free tier has ephemeral storage and does not preserve our batches across restarts. See [persistent disk requirements](https://render.com/docs/disks).
+
 ## Use the API
 
 CSV accepts UTF-8/BOM, required `name,address`, and optional string `phone`. Surrounding whitespace is trimmed, blank records are ignored, and duplicate input rows remain separate. Examples: [three hospitals](examples/hospitals.csv), [optional phone](examples/optional_phone.csv), and [missing address](examples/invalid_missing_address.csv).
@@ -132,7 +140,7 @@ Recorded 20-record benchmark at 50 ms per upstream request, including activation
 
 These are simulation results, including ORM work, not live-service guarantees. In-process `ASGITransport` waits for background completion, so the benchmark measures completion rather than `202` delivery. See [Plan 11](plans/11-integration-and-performance.md) for conditions.
 
-Repository URL and hosted API/docs URL will be added during deployment (Plan 14); no public deployment is claimed here.
+Source repository: [askMohan/paribus-assessment](https://github.com/askMohan/paribus-assessment). Hosted API/docs URLs are pending authenticated Render deployment and verification in Plan 14.
 
 ## Design considerations and production path
 
