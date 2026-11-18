@@ -42,11 +42,11 @@ All configuration names/defaults are in [.env.example](.env.example) and [app/co
 
 ## Deploy on Render
 
-[render.yaml](render.yaml) defines one paid Docker web service (`0.5c-512mb`) with a 1 GB persistent disk mounted at `/data`, `SQLITE_PATH=/data/hospitals.db`, and `/health` monitoring. The existing Dockerfile supplies the build and startup command, including one Uvicorn worker and Render's `PORT`. Other HTTP/limit settings keep the documented application defaults. Automatic deploys are disabled; deploy deliberately when no batch is running.
+[render.yaml](render.yaml) defines one **free** Docker web service with `SQLITE_PATH=/data/hospitals.db` and `/health` monitoring. The existing Dockerfile supplies the build and startup command, including one Uvicorn worker and Render's `PORT`. Other HTTP/limit settings keep the documented application defaults. Automatic deploys are disabled; deploy deliberately when no batch is running.
 
-Create a Blueprint in the [Render dashboard](https://dashboard.render.com/) from this repository and review the paid service/disk before creation. After deployment, verify health, `/docs`, validation-only requests, and a missing-batch `404`; then perform one small intended live upload. Verify that its saved result survives a controlled restart before claiming hosted recovery.
+Create a Blueprint in the [Render dashboard](https://dashboard.render.com/) from this repository using the Free plan. After deployment, verify health, `/docs`, validation-only requests, and a missing-batch `404`; then perform one small intended live upload.
 
-Persistent disks require a paid service and cause a brief stop/start during deployments. Render's free tier has ephemeral storage and does not preserve our batches across restarts. See [persistent disk requirements](https://render.com/docs/disks).
+**Free-host limitation:** there is no persistent disk. Restart/redeploy loses saved batches and their resume checkpoints. Idle spin-down after 15 minutes can also interrupt background work; cold startup takes about a minute. Resume works only while saved state remains available. Local Docker Compose retains its named volume; hosted restart-safe recovery requires persistent storage on another plan/provider. See [Render's free-tier limits](https://render.com/docs/free) and [persistent disk requirements](https://render.com/docs/disks).
 
 ## Use the API
 

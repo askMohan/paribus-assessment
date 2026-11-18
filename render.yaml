@@ -1,9 +1,9 @@
-# Paid service and disk: preserve SQLite across deployments and restarts.
+# Free demonstration: SQLite is ephemeral and cannot survive a restart.
 services:
   - type: web
     name: paribus-assessment
     runtime: docker
-    plan: 0.5c-512mb
+    plan: free
     region: oregon
     branch: main
     numInstances: 1
@@ -14,7 +14,3 @@ services:
         value: https://hospital-directory.onrender.com
       - key: SQLITE_PATH
         value: /data/hospitals.db
-    disk:
-      name: hospital-data
-      mountPath: /data
-      sizeGB: 1
